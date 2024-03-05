@@ -1,3 +1,15 @@
+# v0.0.3 (Tue Mar 05 2024)
+
+#### ⚠️ Pushed to `main`
+
+- fix error ([@iammary](https://github.com/iammary))
+
+#### Authors: 1
+
+- Jes Anub ([@iammary](https://github.com/iammary))
+
+---
+
 # v0.0.2 (Tue Mar 05 2024)
 
 #### ⚠️ Pushed to `main`
