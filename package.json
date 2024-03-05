@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "description": "A Storybook addon that extracts and displays syntax-highlighted HTML from web components",
   "keywords": [
-    "storybook-addons", "html", "web-components", "storybook-addons",
+    "storybook-addons",
+    "html",
+    "web-components",
+    "storybook-addons",
     "web-components",
     "html"
   ],
@@ -64,9 +67,11 @@
     "@storybook/testing-library": "^0.2.2",
     "@storybook/theming": "8.0.0-beta.2",
     "@storybook/types": "8.0.0-beta.2",
+    "@types/js-beautify": "^1.14.3",
     "@types/node": "^18.15.0",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
+    "@types/react-syntax-highlighter": "^15.5.11",
     "@vitejs/plugin-react": "^4.2.1",
     "auto": "^11.0.4",
     "boxen": "^7.1.1",
@@ -106,5 +111,9 @@
       "web-components"
     ],
     "icon": "https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png"
+  },
+  "dependencies": {
+    "js-beautify": "^1.15.1",
+    "react-syntax-highlighter": "^15.5.0"
   }
 }
