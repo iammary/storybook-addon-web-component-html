@@ -76,7 +76,7 @@ export const Panel: React.FC<{ active: boolean }> = props => {
   return (
     <AddonPanel {...props}>
       <ActionBar actionItems={[{ title: copied ? "Copied" : "Copy", onClick }]} />
-      <Prism language="html" {...mergedHighlighter} co>
+      <Prism language="html" {...mergedHighlighter}>
         {formattedCode}
       </Prism>
     </AddonPanel>

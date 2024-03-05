@@ -18,7 +18,7 @@ export const withHTML = makeDecorator({
       const rootSelector = parameters.root || "#storybook-root, #root";
       const root = document.querySelector(rootSelector);
       let code = root ? root.innerHTML : `${rootSelector} not found.`;
-      const { removeEmptyComments, removeComments, transform } = parameters;
+      const { removeEmptyComments = true, removeComments = true, transform } = parameters;
       if (removeEmptyComments) {
         code = code.replace(/<!--\s*-->/g, "");
       }
