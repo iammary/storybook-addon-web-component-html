@@ -1,11 +1,14 @@
 import { EVENTS, PARAM_KEY } from "./constants";
 import { makeDecorator, useChannel } from "@storybook/preview-api";
+import { renderToString } from "react-dom/server";
+import { ReactNode } from "react";
 
 export interface WithHTMLParameters {
   root?: string;
   removeEmptyComments?: boolean;
   removeComments?: boolean | RegExp;
   transform?: (code: string) => string;
+  showRawSource?: boolean;
 }
 
 export const withHTML = makeDecorator({
@@ -14,10 +17,13 @@ export const withHTML = makeDecorator({
   skipIfNoParametersOrOptions: false,
   wrapper: (storyFn, context, { parameters = {} }: { parameters: WithHTMLParameters }) => {
     const emit = useChannel({});
+    const story = storyFn(context) as ReactNode;
     setTimeout(() => {
       const rootSelector = parameters.root || "#storybook-root, #root";
       const root = document.querySelector(rootSelector);
       let code = root ? root.innerHTML : `${rootSelector} not found.`;
+      code = parameters.showRawSource ? renderToString(story) : code;
+
       const { removeEmptyComments = true, removeComments = true, transform } = parameters;
       if (removeEmptyComments) {
         code = code.replace(/<!--\s*-->/g, "");
@@ -36,6 +42,6 @@ export const withHTML = makeDecorator({
       }
       emit(EVENTS.CODE_UPDATE, { code, options: parameters });
     }, 0);
-    return storyFn(context);
+    return story;
   },
 });
