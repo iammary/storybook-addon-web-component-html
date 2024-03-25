@@ -18,6 +18,8 @@ export const withHTML = makeDecorator({
   wrapper: (storyFn, context, { parameters = {} }: { parameters: WithHTMLParameters }) => {
     const emit = useChannel({});
     const story = storyFn(context) as ReactNode;
+    console.log("context: %o ", context);
+    console.log("story: %o ", story);
     setTimeout(() => {
       const rootSelector = parameters.root || "#storybook-root, #root";
       const root = document.querySelector(rootSelector);
