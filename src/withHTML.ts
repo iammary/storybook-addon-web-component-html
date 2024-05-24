@@ -32,8 +32,6 @@ export const withHTML = makeDecorator({
 
     litElement.replace(LIT_EXPRESSION_COMMENTS, "");
 
-    console.log("litElement: %o ", litElement);
-
     setTimeout(() => {
       // const rootSelector = parameters.root || "#storybook-root, #root";
       // const root = document.querySelector(rootSelector);
