@@ -1,7 +1,7 @@
 import { EVENTS, PARAM_KEY } from "./constants";
 import { makeDecorator, useChannel } from "@storybook/preview-api";
-import { renderToString } from "react-dom/server";
 import { ReactNode } from "react";
+import { render as litRender } from "lit";
 
 export interface WithHTMLParameters {
   root?: string;
@@ -11,6 +11,8 @@ export interface WithHTMLParameters {
   showRawSource?: boolean;
 }
 
+const LIT_EXPRESSION_COMMENTS = /<!--\?lit\$[0-9]+\$-->|<!--\??-->/g;
+
 export const withHTML = makeDecorator({
   name: "withHTML",
   parameterName: PARAM_KEY,
@@ -18,11 +20,25 @@ export const withHTML = makeDecorator({
   wrapper: (storyFn, context, { parameters = {} }: { parameters: WithHTMLParameters }) => {
     const emit = useChannel({});
     const story = storyFn(context) as ReactNode;
+
+    const container = window.document.createElement("div");
+
+    litRender(story, container);
+    let litElement = container.children[0].outerHTML;
+
+    if (container.children[0].hasAttribute("data-wc-html-tab_hide")) {
+      litElement = "";
+    }
+
+    litElement.replace(LIT_EXPRESSION_COMMENTS, "");
+
+    console.log("litElement: %o ", litElement);
+
     setTimeout(() => {
-      const rootSelector = parameters.root || "#storybook-root, #root";
-      const root = document.querySelector(rootSelector);
-      let code = root ? root.innerHTML : `${rootSelector} not found.`;
-      code = parameters.showRawSource ? renderToString(story) : code;
+      // const rootSelector = parameters.root || "#storybook-root, #root";
+      // const root = document.querySelector(rootSelector);
+
+      let code = litElement;
 
       const { removeEmptyComments = true, removeComments = true, transform } = parameters;
       if (removeEmptyComments) {
