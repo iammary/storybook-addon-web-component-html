@@ -1,3 +1,15 @@
+# v0.0.5 (Fri May 24 2024)
+
+#### 🐛 Bug Fix
+
+- feat: use lit renderer [#2](https://github.com/iammary/storybook-addon-web-component-html/pull/2) ([@iammary](https://github.com/iammary))
+
+#### Authors: 1
+
+- Jes Anub ([@iammary](https://github.com/iammary))
+
+---
+
 # v0.0.4 (Mon Mar 25 2024)
 
 #### 🐛 Bug Fix
