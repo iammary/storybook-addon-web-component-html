@@ -16,10 +16,18 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Generate token 🔑
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_APP_PRIVATE_KEY }}
 
-      - name: Prepare repository
-        run: git fetch --unshallow --tags
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          fetch-depth: 0
 
       - name: Setup node.js ⬡
         uses: actions/setup-node@v3
@@ -59,8 +67,10 @@ jobs:
 
       - name: Release 🚦
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GIT_AUTHOR_EMAIL: 150774269+iammary-bot[bot]@users.noreply.github.com
+          GIT_COMMITTER_EMAIL: 150774269+iammary-bot[bot]@users.noreply.github.com
         run: |
           npx semantic-release
         id: ver
