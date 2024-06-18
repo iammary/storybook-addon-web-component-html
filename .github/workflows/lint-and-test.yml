@@ -44,20 +44,9 @@ jobs:
 
       - name: Install dependencies ⏬
         run: npm ci --legacy-peer-deps
-#      - name: Generate custom elements analyzer file 🗂️
-#        run: npm run cem
-#
-#      - name: Generate web component analyzer files 🗂️
-#        run: npm run wca
-#
-#      - name: Lint 🕵️‍♂️
-#        run: npm run sast:lint
-#
-#      - name: Check format 🕵️‍♂️
-#        run: npm run sast:format
-#
-#      - name: Test coverage 🕵️‍♂️
-#        run: npm run test:coverage
-#
-#      - name: Build 🔨
-#        run: npm run build
+
+      - name: Lint 🕵️‍♂️
+        run: npm run sast:lint
+
+      - name: Check format 🕵️‍♂️
+        run: npm run sast:format

@@ -26,7 +26,7 @@ export const withHTML = makeDecorator({
     litRender(story, container);
     let litElement = container.children[0].outerHTML;
 
-    if (Object.hasOwn(container.children[0].dataset, "wcHtmlTab_hide")) {
+    if (Object.hasOwn((container.children[0] as HTMLElement).dataset, "wcHtmlTab_hide")) {
       litElement = "";
     }
 
