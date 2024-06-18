@@ -73,6 +73,8 @@ export const Panel: React.FC<{ active: boolean }> = props => {
     return;
   }
 
+  console.log("code: %o", code);
+
   return (
     <AddonPanel {...props}>
       <ActionBar actionItems={[{ title: copied ? "Copied" : "Copy", onClick }]} />
