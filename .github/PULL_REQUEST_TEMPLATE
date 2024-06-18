@@ -1,0 +1,7 @@
+<!--
+
+1. Prefix the title of the PR with either 'fix:' or  'feat:', depending on if the fix is a minor or major version.
+   - see: https://www.conventionalcommits.org/en/v1.0.0/
+2. Pull Request title format: `fix: <the-description>`, or `feat: <the-description>`
+3. Please ensure that the PR has the ticket ID and a detailed description of the changes.
+   For breaking changes, add a `BREAKING CHANGE: <description>` in the detailed description.
