@@ -44,7 +44,7 @@ jobs:
         run: npm list
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps --ignore-scripts
+        run: npm ci --ignore-scripts --legacy-peer-deps
 
       - name: Create Release
         env:
