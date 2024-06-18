@@ -53,9 +53,14 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "sast:lint": "eslint",
-    "sast:format": "prettier --check --end-of-line auto ./src"
+    "sast:format": "prettier --check --end-of-line auto ./src",
+    "semantic-release": "semantic-release"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/npm": "^12.0.1",
     "@storybook/addon-essentials": "8.0.0-beta.2",
     "@storybook/addon-interactions": "8.0.0-beta.2",
     "@storybook/addon-links": "8.0.0-beta.2",
@@ -88,7 +93,9 @@
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
     "eslint-plugin-unicorn": "^54.0.0",
     "husky": "^9.0.11",
+    "i": "^0.3.7",
     "lint-staged": "^15.2.7",
+    "npm": "^10.8.1",
     "npm-check-updates": "^16.14.20",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.3.2",
@@ -96,6 +103,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rimraf": "^5.0.5",
+    "semantic-release": "^24.0.0",
     "storybook": "8.0.0-beta.2",
     "tsup": "^8.0.2",
     "typescript": "^5.3.3",
