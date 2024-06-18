@@ -1,3 +1,9 @@
+## [0.0.7](https://github.com/iammary/storybook-addon-web-component-html/compare/v0.0.6...v0.0.7) (2024-06-18)
+
+### Miscellaneous Chores
+
+- log ([e1904d5](https://github.com/iammary/storybook-addon-web-component-html/commit/e1904d5c2d3d9275549ee559301834f6814f17f2))
+
 ## [0.0.6](https://github.com/iammary/storybook-addon-web-component-html/compare/v0.0.5...v0.0.6) (2024-06-18)
 
 ### Miscellaneous Chores
