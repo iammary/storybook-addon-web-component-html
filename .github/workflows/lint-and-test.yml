@@ -43,7 +43,7 @@ jobs:
         run: npm list
 
       - name: Install dependencies ⏬
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 #      - name: Generate custom elements analyzer file 🗂️
 #        run: npm run cem
 #
