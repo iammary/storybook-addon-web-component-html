@@ -38,6 +38,8 @@ export const withHTML = makeDecorator({
 
       let code = litElement;
 
+      console.log("code: %o ", code);
+
       const { removeEmptyComments = true, removeComments = true, transform } = parameters;
       if (removeEmptyComments) {
         code = code.replace(/<!--\s*-->/g, "");

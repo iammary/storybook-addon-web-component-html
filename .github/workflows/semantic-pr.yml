@@ -1,9 +1,11 @@
 # Validates the semantic release title for PRs
 # https://github.com/marketplace/actions/semantic-pull-request
 name: PR Title Check for Semantic Release
+
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened, converted_to_draft, ready_for_review]
+
 jobs:
   main:
     name: Validate Semantic Release PR title

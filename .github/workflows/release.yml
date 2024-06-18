@@ -1,6 +1,8 @@
 name: Release
 
-on: [push]
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, converted_to_draft, ready_for_review]
 
 jobs:
   release:
@@ -49,4 +51,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npm run release
+          npm run canary-release
