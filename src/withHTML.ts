@@ -11,7 +11,7 @@ export interface WithHTMLParameters {
   showRawSource?: boolean;
 }
 
-const LIT_EXPRESSION_COMMENTS = /<!--\?lit\$[0-9]+\$-->|<!--\??-->/g;
+const LIT_EXPRESSION_COMMENTS = /<!--\?lit\$\d+\$-->|<!--\??-->/g;
 
 export const withHTML = makeDecorator({
   name: "withHTML",
@@ -26,11 +26,11 @@ export const withHTML = makeDecorator({
     litRender(story, container);
     let litElement = container.children[0].outerHTML;
 
-    if (container.children[0].hasAttribute("data-wc-html-tab_hide")) {
+    if (Object.hasOwn(container.children[0].dataset, "wcHtmlTab_hide")) {
       litElement = "";
     }
 
-    litElement.replace(LIT_EXPRESSION_COMMENTS, "");
+    litElement.replaceAll(LIT_EXPRESSION_COMMENTS, "");
 
     setTimeout(() => {
       // const rootSelector = parameters.root || "#storybook-root, #root";
@@ -38,22 +38,20 @@ export const withHTML = makeDecorator({
 
       let code = litElement;
 
-      console.log("code: %o ", code);
-
       const { removeEmptyComments = true, removeComments = true, transform } = parameters;
       if (removeEmptyComments) {
-        code = code.replace(/<!--\s*-->/g, "");
+        code = code.replaceAll(/<!--\s*-->/g, "");
       }
       if (removeComments === true) {
-        code = code.replace(/<!--[\S\s]*?-->/g, "");
+        code = code.replaceAll(/<!--[\S\s]*?-->/g, "");
       } else if (removeComments instanceof RegExp) {
-        code = code.replace(/<!--([\S\s]*?)-->/g, (match: any, p1: string) => (removeComments.test(p1) ? "" : match));
+        code = code.replaceAll(/<!--([\S\s]*?)-->/g, (match: never, p1: string) => (removeComments.test(p1) ? "" : match));
       }
       if (typeof transform === "function") {
         try {
           code = transform(code);
-        } catch (e) {
-          console.error(e);
+        } catch (error) {
+          console.error(error);
         }
       }
       emit(EVENTS.CODE_UPDATE, { code, options: parameters });

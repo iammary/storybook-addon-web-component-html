@@ -12,7 +12,7 @@ export interface WebComponentHtmlPanelProps {
 
 export const Panel: React.FC<{ active: boolean }> = props => {
   const [{ code }, setState] = useAddonState(ADDON_ID, {
-    code: null,
+    code: undefined,
     options: {},
   });
 
@@ -70,7 +70,7 @@ export const Panel: React.FC<{ active: boolean }> = props => {
   };
 
   if (!code) {
-    return null;
+    return;
   }
 
   return (
