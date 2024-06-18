@@ -1,28 +1,23 @@
 name: Release
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types: [opened, edited, synchronize, reopened, converted_to_draft, ready_for_review]
 
 jobs:
   release:
-    name: Release
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
     permissions:
       id-token: write
       contents: write
       issues: write
       pull-requests: write
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-        with:
-          token: ${{ steps.app-token.outputs.token }}
-          fetch-depth: 0
+      - name: Prepare repository
+        run: git fetch --unshallow --tags
 
       - name: Setup node.js ⬡
         uses: actions/setup-node@v3
@@ -51,16 +46,9 @@ jobs:
       - name: Install dependencies
         run: npm ci --ignore-scripts --legacy-peer-deps
 
-      - name: Lint 🕵️‍♂️
-        run: npm run sast:lint
-
-      - name: Check format 🕵️‍♂️
-        run: npm run sast:format
-
-      - name: Release 🚦
+      - name: Create Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          npx semantic-release
-        id: ver
+          npm run canary-release

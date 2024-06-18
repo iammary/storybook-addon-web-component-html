@@ -1,11 +1,11 @@
 import { defineConfig, type Options } from "tsup";
-import { readFile } from "fs/promises";
+import { readFile } from "node:fs/promises";
 import { globalPackages as globalManagerPackages } from "@storybook/manager/globals";
 import { globalPackages as globalPreviewPackages } from "@storybook/preview/globals";
 
 // The current browsers supported by Storybook v7
-const BROWSER_TARGET: Options['target'] = ["chrome100", "safari15", "firefox91"];
-const NODE_TARGET: Options['target'] = ["node18"];
+const BROWSER_TARGET: Options["target"] = ["chrome100", "safari15", "firefox91"];
+const NODE_TARGET: Options["target"] = ["node18"];
 
 type BundlerConfig = {
   bundler?: {
@@ -16,7 +16,7 @@ type BundlerConfig = {
   };
 };
 
-export default defineConfig(async (options) => {
+export default defineConfig(async options => {
   // reading the three types of entries from package.json, which has the following structure:
   // {
   //  ...
@@ -27,15 +27,8 @@ export default defineConfig(async (options) => {
   //     "nodeEntries": ["./src/preset.ts"]
   //   }
   // }
-  const packageJson = await readFile('./package.json', 'utf8').then(JSON.parse) as BundlerConfig;
-  const {
-    bundler: {
-      exportEntries = [],
-      managerEntries = [],
-      previewEntries = [],
-      nodeEntries = [],
-    } = {},
-  } = packageJson;
+  const packageJson = (await readFile("./package.json", "utf8").then(JSON.parse)) as BundlerConfig;
+  const { bundler: { exportEntries = [], managerEntries = [], previewEntries = [], nodeEntries = [] } = {} } = packageJson;
 
   const commonConfig: Options = {
     splitting: false,
@@ -50,7 +43,7 @@ export default defineConfig(async (options) => {
   // export entries are entries meant to be manually imported by the user
   // they are not meant to be loaded by the manager or preview
   // they'll be usable in both node and browser environments, depending on which features and modules they depend on
-  if (exportEntries.length) {
+  if (exportEntries.length > 0) {
     configs.push({
       ...commonConfig,
       entry: exportEntries,
@@ -67,7 +60,7 @@ export default defineConfig(async (options) => {
   // manager entries are entries meant to be loaded into the manager UI
   // they'll have manager-specific packages externalized and they won't be usable in node
   // they won't have types generated for them as they're usually loaded automatically by Storybook
-  if (managerEntries.length) {
+  if (managerEntries.length > 0) {
     configs.push({
       ...commonConfig,
       entry: managerEntries,
@@ -81,7 +74,7 @@ export default defineConfig(async (options) => {
   // preview entries are entries meant to be loaded into the preview iframe
   // they'll have preview-specific packages externalized and they won't be usable in node
   // they'll have types generated for them so they can be imported when setting up Portable Stories
-  if (previewEntries.length) {
+  if (previewEntries.length > 0) {
     configs.push({
       ...commonConfig,
       entry: previewEntries,
@@ -98,7 +91,7 @@ export default defineConfig(async (options) => {
   // node entries are entries meant to be used in node-only
   // this is useful for presets, which are loaded by Storybook when setting up configurations
   // they won't have types generated for them as they're usually loaded automatically by Storybook
-  if (nodeEntries.length) {
+  if (nodeEntries.length > 0) {
     configs.push({
       ...commonConfig,
       entry: nodeEntries,

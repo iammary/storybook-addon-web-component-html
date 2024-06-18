@@ -1,11 +1,10 @@
-/* eslint-disable eslint-comments/disable-enable-pair */
-/* eslint-disable no-console */
-import prompts from 'prompts';
-import { dedent } from 'ts-dedent';
-import { dirname, resolve } from 'path';
-import { readFile, writeFile } from 'fs/promises';
-import { execSync } from 'child_process';
-import { fileURLToPath } from 'url';
+import prompts from "prompts";
+import { dedent } from "ts-dedent";
+// eslint-disable-next-line unicorn/import-style
+import { dirname, resolve } from "node:path";
+import { readFile, writeFile } from "node:fs/promises";
+import { execSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,7 +16,7 @@ const questions = [
     name: "authorName",
     initial: "",
     message: "What is the package author name?*",
-    validate: (name) => (name === "" ? "Name can't be empty" : true),
+    validate: name => (name === "" ? "Name can't be empty" : true),
   },
   {
     type: "text",
@@ -29,36 +28,32 @@ const questions = [
     type: "text",
     name: "packageName",
     message: "What is the addon package name (eg: storybook-addon-something)?*",
-    validate: (name) => (name === "" ? "Package name can't be empty" : true),
+    validate: name => (name === "" ? "Package name can't be empty" : true),
   },
   {
     type: "text",
     name: "displayName",
-    message:
-      "What is the addon display name (this will be used in the addon catalog)?*",
-    validate: (name) =>
-      name === ""
-        ? "Display name can't be empty. For more info, see: https://storybook.js.org/docs/react/addons/addon-catalog#addon-metadata"
-        : true,
+    message: "What is the addon display name (this will be used in the addon catalog)?*",
+    validate: name =>
+      name === "" ? "Display name can't be empty. For more info, see: https://storybook.js.org/docs/react/addons/addon-catalog#addon-metadata" : true,
   },
   {
     type: "text",
     name: "addonDescription",
     initial: "",
     message: "Write a short description of the addon*",
-    validate: (name) => (name === "" ? "Description can't be empty" : true),
+    validate: name => (name === "" ? "Description can't be empty" : true),
   },
   {
     type: "text",
     name: "repoUrl",
     message: "Git repo URL for your addon package (https://github.com/...)*",
-    validate: (url) => (url === "" ? "URL can't be empty" : true),
+    validate: url => (url === "" ? "URL can't be empty" : true),
   },
   {
     type: "text",
     name: "addonIcon",
-    initial:
-      "https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png",
+    initial: "https://user-images.githubusercontent.com/321738/63501763-88dbf600-c4cc-11e9-96cd-94adadc2fd72.png",
     message: "URL of your addon icon",
   },
   {
@@ -67,20 +62,15 @@ const questions = [
     initial: "storybook-addons",
     message: "Enter addon keywords (comma separated)",
     separator: ",",
-    format: (keywords) =>
-      keywords
-        .concat(["storybook-addons"])
-        .map((k) => `"${k}"`)
-        .join(", "),
+    format: keywords => [...keywords, "storybook-addons"].map(k => `"${k}"`).join(", "),
   },
   {
     type: "list",
     name: "supportedFrameworks",
-    initial:
-      "react, vue, angular, web-components, ember, html, svelte, preact, react-native",
+    initial: "react, vue, angular, web-components, ember, html, svelte, preact, react-native",
     message: "List of frameworks you support (comma separated)?",
     separator: ",",
-    format: (frameworks) => frameworks.map((k) => `"${k}"`).join(", "),
+    format: frameworks => frameworks.map(k => `"${k}"`).join(", "),
   },
 ];
 
@@ -94,39 +84,27 @@ const REPLACE_TEMPLATES = {
   supportedFrameworks: `"supported-frameworks"`,
 };
 
-const bold = (message) => `\u001b[1m${message}\u001b[22m`;
-const magenta = (message) => `\u001b[35m${message}\u001b[39m`;
-const blue = (message) => `\u001b[34m${message}\u001b[39m`;
+const bold = message => `\u001B[1m${message}\u001B[22m`;
+const magenta = message => `\u001B[35m${message}\u001B[39m`;
+const blue = message => `\u001B[34m${message}\u001B[39m`;
 
 const main = async () => {
   console.log(
     bold(
       magenta(
         dedent`
-        Welcome to Storybook addon-kit!
-        Please answer the following questions while we prepare this project for you:\n
-      `
-      )
-    )
+          Welcome to Storybook addon-kit!
+          Please answer the following questions while we prepare this project for you:\n
+        `,
+      ),
+    ),
   );
 
-  const {
-    authorName,
-    authorEmail,
-    packageName,
-    addonDescription,
-    repoUrl,
-    displayName,
-    keywords,
-    supportedFrameworks,
-  } = await prompts(questions);
+  const { authorName, authorEmail, packageName, addonDescription, repoUrl, displayName, keywords, supportedFrameworks } = await prompts(questions);
 
   if (!authorName || !packageName) {
-    console.log(
-      `\nProcess canceled by the user. Feel free to run ${bold(
-        "npm run postinstall"
-      )} to execute the installation steps again!`
-    );
+    console.log(`\nProcess canceled by the user. Feel free to run ${bold("npm run postinstall")} to execute the installation steps again!`);
+    // eslint-disable-next-line unicorn/no-process-exit
     process.exit(0);
   }
 
@@ -135,7 +113,7 @@ const main = async () => {
   const packageJson = resolve(__dirname, `../package.json`);
 
   console.log(`\n👷 Updating package.json...`);
-  let packageJsonContents = await readFile(packageJson, "utf-8");
+  let packageJsonContents = await readFile(packageJson, "utf8");
 
   packageJsonContents = packageJsonContents
     .replace(REPLACE_TEMPLATES.packageName, packageName)
@@ -145,22 +123,22 @@ const main = async () => {
     .replace(REPLACE_TEMPLATES.repoUrl, repoUrl)
     .replace(REPLACE_TEMPLATES.displayName, displayName)
     .replace(REPLACE_TEMPLATES.supportedFrameworks, supportedFrameworks)
-    .replace(/\s*"postinstall".*node.*scripts\/welcome.js.*",/, '');
+    .replace(/\s*"postinstall".*node.*scripts\/welcome.js.*",/, "");
 
   await writeFile(packageJson, packageJsonContents);
 
   console.log("📝 Updating the README...");
   const readme = resolve(__dirname, `../README.md`);
-  let readmeContents = await readFile(readme, "utf-8");
+  let readmeContents = await readFile(readme, "utf8");
 
-  const regex = /<\!-- README START -->([\s\S]*)<\!-- README END -->/g;
+  const regex = /<!-- README START -->([\S\s]*)<!-- README END -->/g;
 
-  readmeContents = readmeContents.replace(
+  readmeContents = readmeContents.replaceAll(
     regex,
     dedent`
-    # Storybook Addon ${displayName}
-    ${addonDescription}
-    `
+      # Storybook Addon ${displayName}
+      ${addonDescription}
+    `,
   );
 
   await writeFile(readme, readmeContents);
@@ -169,16 +147,18 @@ const main = async () => {
   execSync('git add . && git commit -m "project setup" --no-verify');
 
   console.log(
-    dedent`\n
-      🚀 All done! Run \`npm run start\` to get started.
+    dedent`
+      \n
+            🚀 All done! Run \`npm run start\` to get started.
 
-      Thanks for using this template, ${authorName.split(" ")[0]}! ❤️
+            Thanks for using this template, ${authorName.split(" ")[0]}! ❤️
 
-      Feel free to open issues in case there are bugs/feature requests at:
+            Feel free to open issues in case there are bugs/feature requests at:
 
-      ${bold(blue("https://github.com/storybookjs/addon-kit"))}\n
-    `
+            ${bold(blue("https://github.com/storybookjs/addon-kit"))}\n
+    `,
   );
 };
 
-main().catch((e) => console.log(`Something went wrong: ${e}`));
+// eslint-disable-next-line unicorn/prefer-top-level-await
+main().catch(error => console.log(`Something went wrong: ${error}`));
